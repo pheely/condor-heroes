@@ -1,0 +1,41 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: delivery-pipeline-for-employee-api
+description: main application pipeline
+serialPipeline:
+  stages:
+  - targetId: ist
+    profiles: [ist]
+  - targetId: uat
+    profiles: [uat]
+  - targetId: prd
+    profiles: [prd]
+---
+
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: ist
+description: Employee API IST
+run:
+  location: projects/ibcwe-event-layer-f3ccf6d9/locations/us-central1
+---
+
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: uat
+description: Employee API UAT
+run:
+  location: projects/ibcwe-event-layer-f3ccf6d9/locations/us-central1
+---
+
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: prd
+description: Employee API Production
+requireApproval: true
+run:
+  location: projects/ibcwe-event-layer-f3ccf6d9/locations/us-central1

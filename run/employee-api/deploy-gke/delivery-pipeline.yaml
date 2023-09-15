@@ -1,0 +1,10 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: employee-api
+description: employee-api delivery pipeline
+serialPipeline:
+ stages:
+ - targetId: ist
+ - targetId: uat
+ - targetId: prod

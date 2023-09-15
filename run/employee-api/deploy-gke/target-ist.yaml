@@ -1,0 +1,7 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: ist
+description: ist cluster
+gke:
+  cluster: projects/ibcwe-event-layer-f3ccf6d9/locations/us-central1-a/clusters/ist

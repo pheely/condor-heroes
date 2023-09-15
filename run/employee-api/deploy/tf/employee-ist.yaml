@@ -1,0 +1,9 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: employee-api-ist
+spec:
+  template:
+    spec:
+      containers:
+      - image: employee-api-image
