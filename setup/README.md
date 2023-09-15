@@ -228,16 +228,16 @@ go version
 # Ensure the necessary packages are present:
 apt install -y wget apt-transport-https
 
-#Download the Eclipse Adoptium GPG key:
+# Download the Eclipse Adoptium GPG key:
 mkdir -p /etc/apt/keyrings
-wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc
+wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc
 
 # Configure the Eclipse Adoptium apt repository. To check the full list of 
 # versions supported take a look at the list in the tree at 
 # https://packages.adoptium.net/ui/native/deb/dists/.
 #
 # For Linux Mint (based on Ubuntu) you have to replace VERSION_CODENAME with UBUNTU_CODENAME.
-echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
+echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
  	
 # Install the Temurin version you require:
 apt update 
@@ -245,4 +245,18 @@ apt install temurin-17-jdk
 ```
 
 </details>
+
+### gradle
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+```bash
+curl -L https://services.gradle.org/distributions/gradle-7.6.2-bin.zip -o gradle.zip
+sudo mkdir /opt/gradle
+sudo unzip -d /opt/gradle gradle.zip
+echo 'export PATH=$PATH:/opt/gradle/gradle-7.6.2/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+</details>
+
 </details>
