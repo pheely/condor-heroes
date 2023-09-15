@@ -1,10 +1,14 @@
-# POC Projects
+# Ubuntu Development Machine
 
-## [Cloud Run](run/README.md)
+## [Machine Setup](setup/README.md)
 
-## [Terraform](tf/README.md)
+## POC Projects
 
-## [Vault](vault/README.md)
+### [Cloud Run](run/README.md)
+
+### [Terraform](tf/README.md)
+
+### [Vault](vault/README.md)
 
 
 
