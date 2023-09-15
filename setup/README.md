@@ -1,38 +1,5 @@
 # Setup
 
-<style>
-    h1 {
-        color: DarkRed;
-        text-align: center;
-    }
-    h2 {
-        color: DarkBlue;
-    }
-    h3 {
-        color: DarkGreen;
-    }
-    h4 {
-        color: DarkMagenta;
-    }
-    strong {
-        color: Maroon;
-    }
-    em {
-        color: Maroon;
-    }
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto
-    }
-    code {
-        color: SlateBlue;
-    }
-    mark {
-        background-color:GoldenRod;
-    }
-</style>
-
 ## Create a Ubuntu VM
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
@@ -259,4 +226,52 @@ source ~/.bashrc
 ```
 </details>
 
+### mkcert
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+```bash
+sudo apt install libnss3-tools
+curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+chmod +x mkcert-v*-linux-amd64
+sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+rm mkcert-v*-linux-amd64
+```
+
 </details>
+
+</details>
+
+
+<style>
+    h1 {
+        color: DarkRed;
+        text-align: center;
+    }
+    h2 {
+        color: DarkBlue;
+    }
+    h3 {
+        color: DarkGreen;
+    }
+    h4 {
+        color: DarkMagenta;
+    }
+    strong {
+        color: Maroon;
+    }
+    em {
+        color: Maroon;
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto
+    }
+    code {
+        color: SlateBlue;
+    }
+    mark {
+        background-color:GoldenRod;
+    }
+</style>
