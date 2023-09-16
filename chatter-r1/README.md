@@ -103,3 +103,14 @@
     ```bash
     curl pem https://localhost:4567/logs | jq
     ```
+8. Forced login
+
+  - Register a `test` user
+    ```bash
+    curl -i --cacert "$(mkcert -CAROOT)/rootCA.pem" \
+    -d '{"username":"test","password":"password"}' \
+    -H 'Content-Type: application/json' https://localhost:4567/users
+    ```
+  - Open browser for https://localhost:4567/chatter.html
+  - When prompted, enter "test/password"
+  - Enter space name and owner, and press "Create".

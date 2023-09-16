@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 import static spark.Spark.after;
 import static spark.Spark.afterAfter;
@@ -30,8 +31,9 @@ import static spark.Spark.secure;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-	// Enable HTTPS
-	secure("localhost.p12", "changeit", null, null);
+        Spark.staticFiles.location("/public");
+        // Enable HTTPS
+        secure("localhost.p12", "changeit", null, null);
 
         // natter is a privileged user
         var datasource = JdbcConnectionPool.create(
