@@ -20,7 +20,7 @@ sudo apt update && sudo apt install vault
 vault version
 ```
 
-## Stating the server
+## Starting the server
 
 ```bash
 $ vault server -dev
@@ -57,3 +57,16 @@ vault status
 
 https://developer.hashicorp.com/vault/docs/auth/gcp
 
+```bash
+vault auth enable gcp
+
+vault write auth/gcp/config \
+credentials=@/home/ext_philip_yang_scotiabank_com/keys/gyre-dataflow.json
+
+vault read auth/gcp/config
+
+vault write auth/gcp/role/my-iam-role type='iam' policies='dev,prod' \
+bound_service_accounts="gyre-dataflow@ibcwe-event-layer-f3ccf6d9.iam.gserviceaccount.com"
+
+vault read auth/gcp/role/my-iam-role
+```
