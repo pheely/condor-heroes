@@ -1,4 +1,4 @@
-# Chatter - Project for API Security Study - Reversion 2
+# Chatter - Project for API Security Study - Reversion 3
 
 <style>
     h1 {
@@ -35,23 +35,21 @@
 
 ## Enhancements in this revision
 
-### Replacing HTTP Basic authentication with token-based authentication
+### Supporting CORS
 
 ![img](img/2-1.png)
 
-### Invalidating the existing session to avoud session fixation issue
+### Storing tokens using the Web Storage API
 
 ![img](img/2-2.png)
 
-### Using double-submit cookies to prevent cross-site request forgery attacks
+### Using standard Bearer HTTP authentication schema
 
 ![img](img/2-3.png)
 
 For APIs, the CSRF token is sent in response JSON.
 
-### Custom Login, Create Space, and Logout
-
-![img](img/2-4.png)
+### Hardening database token storage
 
 ## Important points
 
@@ -76,7 +74,7 @@ For APIs, the CSRF token is sent in response JSON.
     -H 'Content-Type: application/json' \
     -X POST https://localhost:4567/sessions
     ```
-3. Call an API endpoint passing in the cookie and the X-CSRF-Token header
+3. Call an API endpoint passing in the cookie
     ```bash
     curl -i --cacert "$(mkcert -CAROOT)/rootCA.pem" \
     -b /tmp/cookiejar \
@@ -84,16 +82,4 @@ For APIs, the CSRF token is sent in response JSON.
     -H 'X-CSRF-Token: mFeDbVbFbpwe--4dPYpgQ68f-2iD9jZwdRK-azNeXik' \
     -d '{"name": "test space", "owner": "test"}' \
     https://localhost:4567/spaces
-    ```
-4. Go to https://localhost:4567/chatter.html. Enter anything string in the fields. The Login page will appear. Enter a valid username and password and click the Login button. The Chatter! page will show up. Enter a space name and a valid username as the owner, and click the Create button. The following message will display on the Javascript console:
-    ```text
-    Created space:  demo /spaces/1
-    ```
-5. Logout
-    ```bash
-    curl -i --cacert "$(mkcert -CAROOT)/rootCA.pem" \
-    -b /tmp/cookiejar \
-    -H 'Content-Type: application/json' \
-    -H 'X-CSRF-Token: mFeDbVbFbpwe--4dPYpgQ68f-2iD9jZwdRK-azNeXik' \
-    -X DELETE https://localhost:4567/sessions
     ```

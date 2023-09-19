@@ -23,7 +23,6 @@ import spark.Spark;
 import static spark.Spark.after;
 import static spark.Spark.afterAfter;
 import static spark.Spark.before;
-import static spark.Spark.delete;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.halt;
@@ -102,7 +101,6 @@ public class Main {
         // finally add the check if authentication was successful
         before("/sessions", userController::requireAuthentication);
         post("/sessions", tokenController::login);
-        delete("/sessions", tokenController::logout);
 
         before("/spaces", userController::requireAuthentication);
         post("/spaces", spaceController::createSpace);

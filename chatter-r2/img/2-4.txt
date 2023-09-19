@@ -1,0 +1,31 @@
+@startuml
+"Client"->"login.html": Login
+activate "Client"
+activate "login.html"
+"login.html"->"API Server": Calls a dedicated login endpoint\nwith crentials (username/password)
+activate "API Server"
+"API Server"->"Token Store": Stores the token
+activate "Token Store"
+deactivate "Token Store"
+"API Server"->"login.html": Returns a time-limited token \nin a Cookie, and a csrfToken
+"login.html"->"login.html":\n  Creates a csrfToken cookie
+"login.html"->"chatter.html":\n Redirects
+activate "chatter.html"
+deactivate "login.html"
+"Client"->"chatter.html": Submits
+"chatter.html"->"chatter.html": retrieves the \ncsrfToken \nfrom the cookie
+"chatter.html"->"API Server": Calls other API endpoints and sends the token as \na cookie, csrfToken in the X-CSRF-Token header
+"API Server"->"API Server":\n Validates the X-CSRF-Token matches \n SHA-256(session cookie)
+"API Server"->"Token Store":\n Validates the token
+activate "Token Store"
+deactivate "Token Store"
+"API Server"->"chatter.html":\n Response
+deactivate "chatter.html"
+====
+"Client"->"API Server": Logout
+"API Server"->"Token Store": Revokes the token
+activate "Token Store"
+deactivate "Token Store"
+deactivate "API Server"
+deactivate "Client"
+@enduml

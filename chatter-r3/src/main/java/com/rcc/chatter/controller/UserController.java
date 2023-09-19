@@ -86,10 +86,7 @@ public class UserController {
       // should authenticate with Basic authentication. A user-agent, e.g.,
       // the browser after receiving this header, would prompt the user for
       // their username and password.
-      //
-      // Disable this to use custom login page
-      //response.header("WWW-Authenticate", "Basic realm=\"/\", charset=\"UTF-8\"");
-
+      response.header("WWW-Authenticate", "Basic realm=\"/\", charset=\"UTF-8\"");
       halt(401);
     }
   }
