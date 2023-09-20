@@ -1,0 +1,18 @@
+@startuml
+"Login Javascript\n@localhost:9999"->"Browser\nSOP+CORS": Login to API Server (POST)
+activate "Login Javascript\n@localhost:9999"
+activate "Browser\nSOP+CORS"
+"Browser\nSOP+CORS"->"API Server\n@localhost:4567": Preflight request (OPTIONS) with  headers\nOrigin: https://localhost:9999\nAccess-Control-Request-Method: POST
+activate "API Server\n@localhost:4567"
+"API Server\n@localhost:4567"->"Allowed\nOrigins": is "https://localhost:9999" allowed?
+activate "Allowed\nOrigins"
+"Allowed\nOrigins"->"API Server\n@localhost:4567": yes or no
+deactivate "Allowed\nOrigins"
+"API Server\n@localhost:4567"->"Browser\nSOP+CORS": Status Code: 204\nAccess-Control-Allow-Origin: https://localhost:9999\nAccess-Control-Allow-Headers: Content-Type, Authorization, X-CSRF-Token\nAccess-Control-Allow-Methods: GET, POST, DELETE
+"Browser\nSOP+CORS"->"API Server\n@localhost:4567":\nPOST /sessions
+"API Server\n@localhost:4567"->"Browser\nSOP+CORS":\nOr Status Code: 201
+====
+
+"API Server\n@localhost:4567"-->"Browser\nSOP+CORS":\nOr Status Code: 403
+"Browser\nSOP+CORS"-->"Login Javascript\n@localhost:9999": 403
+@enduml
