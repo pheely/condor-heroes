@@ -1,37 +1,6 @@
-# Chatter - Project for API Security Study - Reversion 1
+<link href="style.css" rel="stylesheet"></link>
 
-<style>
-    h1 {
-        color: DarkRed;
-        text-align: center;
-    }
-    h2 {
-        color: DarkBlue;
-    }
-    h3 {
-        color: DarkGreen;
-    }
-    h4 {
-        color: DarkMagenta;
-    }
-    strong {
-        color: Maroon;
-    }
-    em {
-        color: Maroon;
-    }
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto
-    }
-    code {
-        color: SlateBlue;
-    }
-    mark {
-        background-color:GoldenRod;
-    }
-</style>
+# Chatter - Project for API Security Study - Reversion 1
 
 ## Important points
 
