@@ -7,6 +7,8 @@ services:
     restart: always
     environment: 
       - DB=mysql://root:@tcp(sqldb:3306)/hr
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
   sqldb:
     build: 
       context: .

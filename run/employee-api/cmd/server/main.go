@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
@@ -15,6 +16,7 @@ import (
 
 var port string
 var connectionParameters stores.ConnectionParameters
+var redisParameters stores.RedisParameters
 
 func init() {
 	mustGetEnv := func(key string) string {
@@ -37,11 +39,23 @@ func init() {
 	if port == "" {
 		port = "8080"
 	}
+
+	maxRedisConn := os.Getenv("REDIS_MAX_CONN")
+	if maxRedisConn == "" {
+		maxRedisConn = "1"
+	}
+	count, _ := strconv.Atoi(maxRedisConn)
+	redisParameters = stores.RedisParameters {
+		Host: mustGetEnv("REDIS_HOST"), 
+		Port: mustGetEnv("REDIS_PORT"),
+		MaxConnections: count,
+	}
 }
 
 func main() {
 	s := handler.Service{
 		Connection: stores.NewDataSource(connectionParameters),
+		RedisStore: stores.NewRedisStore(redisParameters),
 	}
 
 	r := CreateRouter(s)
@@ -50,7 +64,7 @@ func main() {
 	log.Fatal().Err(http.ListenAndServe(":"+port, r)).Msg("Can't start service")
 }
 
-func CreateRouter(h handler.Service) *mux.Router {
+func CreateRouter(s handler.Service) *mux.Router {
 	rootLogger := zerolog.New(os.Stdout)
 	middleware := crzerolog.InjectLogger(&rootLogger)
 	r := mux.NewRouter()
@@ -62,13 +76,13 @@ func CreateRouter(h handler.Service) *mux.Router {
 		func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusNoContent)
 		})
-	api.Path("/employee").Methods(http.MethodPost).HandlerFunc(h.CreateEmployee)
-	api.Path("/employee").Methods(http.MethodGet).HandlerFunc(h.GetAllEmployees)
-	api.Path("/employee").Methods(http.MethodDelete).HandlerFunc(h.DeleteAllEmployees)
-	api.Path("/employee/{id}").Methods(http.MethodGet).HandlerFunc(h.GetEmployee)
-	api.Path("/employee/{id}").Methods(http.MethodDelete).HandlerFunc(h.DeleteEmployee)
-	api.Path("/employee/{id}").Methods(http.MethodPatch, http.MethodPut).HandlerFunc(h.UpdateEmployee)
-	api.Path("/help").Methods(http.MethodGet, http.MethodGet).HandlerFunc(h.Help)
+	api.Path("/employee").Methods(http.MethodPost).HandlerFunc(s.CreateEmployee)
+	api.Path("/employee").Methods(http.MethodGet).HandlerFunc(s.GetAllEmployees)
+	api.Path("/employee").Methods(http.MethodDelete).HandlerFunc(s.DeleteAllEmployees)
+	api.Path("/employee/{id}").Methods(http.MethodGet).HandlerFunc(s.GetEmployee)
+	api.Path("/employee/{id}").Methods(http.MethodDelete).HandlerFunc(s.DeleteEmployee)
+	api.Path("/employee/{id}").Methods(http.MethodPatch, http.MethodPut).HandlerFunc(s.UpdateEmployee)
+	api.Path("/help").Methods(http.MethodGet, http.MethodGet).HandlerFunc(s.Help)
 
 	return r
 }

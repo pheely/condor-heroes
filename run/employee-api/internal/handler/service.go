@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"io"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -18,6 +18,7 @@ func JsonHeader(next http.Handler) http.Handler {
 
 type Service struct {
 	Connection stores.DataSource
+	RedisStore stores.RedisStore
 }
 
 type employee struct {
@@ -43,7 +44,12 @@ func convertToEmployeeJson(t stores.Employee) employee {
 
 func (s *Service) Help(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, "Employee API v1 \n")
+	counter, err := s.RedisStore.Increment()
+	if err != nil {
+		http.Error(w, "Error incrementing visitor counter", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "Employee API v1. You are vistor number %d\n", counter)
 }
 
 func (s *Service) GetAllEmployees(w http.ResponseWriter, r *http.Request) {
