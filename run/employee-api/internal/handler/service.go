@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
+	"github.com/rs/zerolog/log"
 	"github.com/gorilla/mux"
 	"github.com/pheely/employee-api/internal/stores"
 )
@@ -49,6 +51,7 @@ func (s *Service) Help(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error incrementing visitor counter", http.StatusInternalServerError)
 		return
 	}
+	log.Info().Msg("counter: " + strconv.Itoa(counter))
 	fmt.Fprintf(w, "Employee API v1. You are vistor number %d\n", counter)
 }
 
