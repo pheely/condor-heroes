@@ -1,0 +1,20 @@
+package stores
+
+type Store interface {
+	Connect() error
+	Create(employee *Employee) error
+	DeleteAll() error
+	Get(id string) (*Employee, error)
+	Update(id string, employee *Employee) (*Employee, error)
+	Delete(id string) error
+	GetAll() ([]Employee, error)
+}
+
+type Employee struct {
+	ID        string
+	First_Name string
+	Last_Name  string
+	Department string
+	Salary    int
+	Age       int
+}

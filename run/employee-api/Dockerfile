@@ -5,7 +5,7 @@ COPY go.* ./
 RUN go mod download
  
 COPY . .
-RUN go build -o /go/bin/server github.com/pheely/employee-api/server
+RUN go build -o /go/bin/server github.com/pheely/employee-api/cmd/server
 
 FROM gcr.io/distroless/base-debian10:nonroot AS run
 

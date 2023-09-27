@@ -8,7 +8,7 @@ Finally, Terraform is used to deploy all the required resources to support the i
 
 ## Architecture
 
-![img](img/api.png)
+![img](assets/api.png)
 
 - The application exposes an employee API endpoint which provides CRUD operations on the Employee resource.
 - CloudSQL MySQL is used as the data store

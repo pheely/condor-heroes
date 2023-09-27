@@ -39,7 +39,7 @@ func (s *SQLStore) Connect() error {
 	return nil
 }
 
-func (s SQLStore) Create(_ string, t *Employee) error {
+func (s SQLStore) Create(t *Employee) error {
 
 	stmt, err := s.DB.Prepare(`INSERT INTO employees(first_name, last_name, department, salary, age) VALUES (
 		?,
@@ -63,7 +63,7 @@ func (s SQLStore) Create(_ string, t *Employee) error {
 	return nil
 }
 
-func (s SQLStore) Delete(_ string, id string) error {
+func (s SQLStore) Delete(id string) error {
 	stmt, err := s.DB.Prepare("DELETE FROM employees WHERE id=?")
 	if err != nil {
 		return err
@@ -75,9 +75,9 @@ func (s SQLStore) Delete(_ string, id string) error {
 	return nil
 }
 
-func (s SQLStore) Update(listID string, id string, newT *Employee) (*Employee, error) {
+func (s SQLStore) Update(id string, newT *Employee) (*Employee, error) {
 
-	t, err := s.Get(listID, id)
+	t, err := s.Get(id)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func (s SQLStore) Update(listID string, id string, newT *Employee) (*Employee, e
 	return nil, nil
 }
 
-func (s SQLStore) Get(_ string, id string) (*Employee, error) {
+func (s SQLStore) Get(id string) (*Employee, error) {
 	rows, err := s.DB.Query("select id, first_name, last_name, department, salary, age from employees where id=?", id)
 	if err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ func (s SQLStore) Get(_ string, id string) (*Employee, error) {
 	return &t, nil
 }
 
-func (s SQLStore) Clear(_ string) error {
+func (s SQLStore) DeleteAll() error {
 	stmt, err := s.DB.Prepare("DELETE FROM employees")
 	if err != nil {
 		return err
@@ -151,7 +151,7 @@ func (s SQLStore) Clear(_ string) error {
 	return nil
 }
 
-func (s SQLStore) List(_ string) ([]Employee, error) {
+func (s SQLStore) GetAll() ([]Employee, error) {
 	rows, err := s.DB.Query("select id, first_name, last_name, department, salary, age from employees")
 	if err != nil {
 		return nil, err
