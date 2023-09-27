@@ -7,9 +7,10 @@ locals {
 }
 
 resource "google_project_service" "enabled_service" {
-  for_each = toset(local.services)
-  project  = var.project_id
-  service  = each.key
+  for_each           = toset(local.services)
+  project            = var.project_id
+  service            = each.key
+  disable_on_destroy = false
 
   provisioner "local-exec" {
     command = "sleep 15"
