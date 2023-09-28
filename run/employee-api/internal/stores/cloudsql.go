@@ -30,7 +30,7 @@ func NewDataSource(params ConnectionParameters) DataSource {
 	ds := DataSource{params, nil}
 	err := ds.Connect()
 	if err != nil {
-		log.Fatal("Failed to create a connection")
+		log.Fatal("Failed to create a connection" + err.Error())
 	}
 
 	return ds

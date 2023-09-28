@@ -29,7 +29,7 @@ func init() {
 
 	connectionParameters = stores.ConnectionParameters{
 		DBUser:                 mustGetEnv("DB_USER"),
-		DBPwd:                  mustGetEnv("DB_PASS"),
+		DBPwd:                  os.Getenv("DB_PASS"),
 		DBName:                 mustGetEnv("DB_NAME"),
 		PrivateIP:              os.Getenv("DB_PRIVATE_IP"),
 		InstanceConnectionName: mustGetEnv("INSTANCE_CONNECTION_NAME"),
