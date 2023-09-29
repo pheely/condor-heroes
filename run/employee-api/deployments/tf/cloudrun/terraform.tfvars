@@ -1,0 +1,5 @@
+project_id   = "ibcwe-event-layer-f3ccf6d9"
+region       = "us-central1"
+service_name = "employee-api"
+image_name   = "us-central1-docker.pkg.dev/ibcwe-event-layer-f3ccf6d9/cloud-run-try/employee"
+sa           = "gyre-dataflow@ibcwe-event-layer-f3ccf6d9.iam.gserviceaccount.com"
