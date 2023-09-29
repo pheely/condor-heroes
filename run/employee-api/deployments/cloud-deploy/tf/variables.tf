@@ -5,7 +5,12 @@ variable "project_id" {
 }
 
 variable "region_id" {
-    type        = string
-    default     = "us-central1"
-    description = "The Google Cloud compute region to use"
+  type        = string
+  default     = "us-central1"
+  description = "The Google Cloud compute region to use"
+}
+
+variable "services" {
+  description = "List of Services to be enabled"
+  type        = list(string)
 }
