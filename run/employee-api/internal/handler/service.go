@@ -64,7 +64,7 @@ func (s *Service) Help(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Info().Msg("counter: " + strconv.Itoa(counter))
-	fmt.Fprintf(w, "Employee API v1. You are vistor number %d\n", counter)
+	fmt.Fprintf(w, "Employee API v1. You are visitor number %d\n", counter)
 }
 
 func (s *Service) GetAllEmployees(w http.ResponseWriter, r *http.Request) {
