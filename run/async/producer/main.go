@@ -50,7 +50,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	publish(w, projectID, topicID, "request-" + randString(5))
+	// publish(w, projectID, topicID, "request-" + randString(5))
+	publish(w, projectID, topicID, createMsg())
 }    
 
 func publish(w io.Writer, projectID, topicID, msg string) error {
@@ -91,4 +92,14 @@ func randInt(n int) string {
 		b[i] = digits[rand.Intn(len(digits))]
 	}
 	return string(b)
+}
+func createMsg() string {
+	firstName := randString(5)
+	lastName  := randString(8)
+	department := randString(6)
+	salary := randInt(5)
+	age := randInt(2)
+
+	return fmt.Sprintf("{\"first_name\":\"%s\",\"last_name\":\"%s\",\"department\":\"%s\",\"salary\":%s,\"age\":%s}",
+						firstName, lastName, department, salary, age)
 }
