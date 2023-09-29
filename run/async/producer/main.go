@@ -16,6 +16,7 @@ import (
 var projectID string
 var topicID string
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+var digits = []rune("123456789")
 
 func init() {
 	projectID = os.Getenv("GOOGLE_PROJECT_ID")
@@ -31,7 +32,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 
 	log.Println("project ID: ", projectID, " topic ID: ", topicID,
-		" rand: ", randString(5))
+		" rand: ", randInt(5))
 }
 
 func main() {
@@ -82,4 +83,12 @@ func randString(n int) string {
         b[i] = letters[rand.Intn(len(letters))]
     }
     return string(b)
+}
+
+func randInt(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = digits[rand.Intn(len(digits))]
+	}
+	return string(b)
 }
