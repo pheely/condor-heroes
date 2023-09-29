@@ -11,7 +11,7 @@ services:
       - DB_NAME=hr
       - DB_PRIVATE_IP=
       - INSTANCE_CONNECTION_NAME=sqldb
-        #      - DB=mysql://root:@tcp(sqldb:3306)/hr
+      # - DB=mysql://root:@tcp(sqldb:3306)/hr
       - REDIS_HOST=redis
       - REDIS_PORT=6379
   sqldb:

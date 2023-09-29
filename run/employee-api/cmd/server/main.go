@@ -84,5 +84,13 @@ func CreateRouter(s handler.Service) *mux.Router {
 	api.Path("/employee/{id}").Methods(http.MethodPatch, http.MethodPut).HandlerFunc(s.UpdateEmployee)
 	api.Path("/help").Methods(http.MethodGet, http.MethodGet).HandlerFunc(s.Help)
 
+	event := r.PathPrefix("/event").Subrouter()
+	event.Use(handler.JsonHeader)
+	event.Methods(http.MethodOptions).HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusNoContent)
+		})
+	event.Path("/create").Methods(http.MethodPost).HandlerFunc(s.ProcessCreateEvent)
+
 	return r
 }
