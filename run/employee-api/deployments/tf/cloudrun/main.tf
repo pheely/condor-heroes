@@ -60,3 +60,13 @@ resource "google_cloud_run_v2_service" "this" {
     }
   }
 }
+
+resource "google_cloud_run_v2_service_iam_binding" "this" {
+  project  = var.project_id
+  name     = google_cloud_run_v2_service.this.name
+  location = var.region
+  role     = "roles/run.invoker"
+  members  = [
+    "serviceAccount:${data.terraform_remote_state.pubsub.outputs.sa_email}"
+  ]
+}

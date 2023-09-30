@@ -24,4 +24,11 @@ variable "sa" {
   description = "SA associated with the service"
   type        = string
 }
-
+variable "sub_name" {
+  description = "push subscription"
+  type        = string
+}
+variable "push_path" {
+  description = "Employee API path to push message"
+  type        = string
+}
