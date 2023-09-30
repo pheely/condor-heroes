@@ -6,7 +6,7 @@ resource "random_password" "root" {
 resource "google_secret_manager_secret" "root_pw" {
   secret_id = var.secret_root_pw
   replication {
-    automatic = true
+    auto {}
   }
 }
 
@@ -23,7 +23,7 @@ resource "random_password" "user" {
 resource "google_secret_manager_secret" "user_pw" {
   secret_id = var.secret_user_pw
   replication {
-    automatic = true
+    auto {}
   }
 }
 

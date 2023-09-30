@@ -17,3 +17,8 @@ db_settings = {
 }
 secret_root_pw     = "employee-db-root-pw"
 secret_user_pw     = "employee-db-user-pw"
+sa_name            = "employee-api-invoker"
+sa_display_name    = "SA calling employee api"
+roles	           = ["run/invoker"]
+topic_name	   = "employee_creation"
+

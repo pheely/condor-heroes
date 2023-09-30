@@ -6,12 +6,12 @@ resource "google_cloud_run_v2_service" "this" {
     volumes {
       name = "cloudsql"
       cloud_sql_instance {
-        instances = [data.terraform_remote_state.foundation.outputs.instance_connection_name]
+        instances = [data.terraform_remote_state.infra.outputs.instance_connection_name]
       }
     }
 
     vpc_access {
-      connector = data.terraform_remote_state.foundation.outputs.vpc_connector
+      connector = data.terraform_remote_state.infra.outputs.vpc_connector
     }
 
     service_account = var.sa
@@ -26,20 +26,20 @@ resource "google_cloud_run_v2_service" "this" {
 
       env {
         name  = "DB_USER"
-        value = data.terraform_remote_state.foundation.outputs.db_user
+        value = data.terraform_remote_state.infra.outputs.db_user
       }
       env {
         name = "DB_PASS"
         value_source {
           secret_key_ref {
-            secret  = data.terraform_remote_state.foundation.outputs.user_pw_secret_id
-            version = data.terraform_remote_state.foundation.outputs.user_pw_secret_version
+            secret  = data.terraform_remote_state.infra.outputs.user_pw_secret_id
+            version = data.terraform_remote_state.infra.outputs.user_pw_secret_version
           }
         }
       }
       env {
         name  = "DB_NAME"
-        value = data.terraform_remote_state.foundation.outputs.db_name
+        value = data.terraform_remote_state.infra.outputs.db_name
       }
       env {
         name  = "DB_PRIVATE_IP"
@@ -47,15 +47,15 @@ resource "google_cloud_run_v2_service" "this" {
       }
       env {
         name  = "INSTANCE_CONNECTION_NAME"
-        value = data.terraform_remote_state.foundation.outputs.instance_connection_name
+        value = data.terraform_remote_state.infra.outputs.instance_connection_name
       }
       env {
         name  = "REDIS_HOST"
-        value = data.terraform_remote_state.foundation.outputs.redis_host
+        value = data.terraform_remote_state.infra.outputs.redis_host
       }
       env {
         name  = "REDIS_PORT"
-        value = data.terraform_remote_state.foundation.outputs.redis_port
+        value = data.terraform_remote_state.infra.outputs.redis_port
       }
     }
   }
@@ -67,6 +67,6 @@ resource "google_cloud_run_v2_service_iam_binding" "this" {
   location = var.region
   role     = "roles/run.invoker"
   members  = [
-    "serviceAccount:${data.terraform_remote_state.pubsub.outputs.sa_email}"
+    "serviceAccount:${data.terraform_remote_state.infra.outputs.sa_email}"
   ]
 }

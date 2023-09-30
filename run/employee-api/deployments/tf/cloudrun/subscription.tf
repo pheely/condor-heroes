@@ -1,6 +1,6 @@
 resource "google_pubsub_subscription" "this" {
   name  = var.sub_name
-  topic = data.terraform_remote_state.pubsub.outputs.topic
+  topic = data.terraform_remote_state.infra.outputs.topic
 
   ack_deadline_seconds = 20
 
@@ -12,7 +12,7 @@ resource "google_pubsub_subscription" "this" {
     }
 
     oidc_token {
-      service_account_email = data.terraform_remote_state.pubsub.outputs.sa_email
+      service_account_email = data.terraform_remote_state.infra.outputs.sa_email
     }
   }
 }
