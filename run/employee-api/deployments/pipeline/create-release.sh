@@ -13,7 +13,7 @@ fi
 
 echo "REGION: $REGION"
 
-gcloud deploy releases create employee-api-release-001 \
+gcloud deploy releases create employee-api-release-002 \
   --project=ibcwe-event-layer-f3ccf6d9 \
   --region=$REGION \
   --delivery-pipeline=employee-api-cd-pipeline \
