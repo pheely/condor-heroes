@@ -4,6 +4,30 @@ metadata:
   name: employee-api-uat
 spec:
   template:
+    metadata:
+      annotations:
+        run.googleapis.com/cloudsql-instances: ibcwe-event-layer-f3ccf6d9:us-central1:sql-db
+        run.googleapis.com/vpc-access-connector: employee
     spec:
+      serviceAccountName: gyre-dataflow@ibcwe-event-layer-f3ccf6d9.iam.gserviceaccount.com
       containers:
-      - image: employee-api-image
+        - image: employee-api-image
+          env:
+          - name: DB_USER
+            value: user
+          - name: DB_NAME
+            value: hr
+          - name: DB_PRIVATE_IP
+            value: ""
+          - name: INSTANCE_CONNECTION_NAME
+            value: ibcwe-event-layer-f3ccf6d9:us-central1:sql-db
+          - name: REDIS_HOST
+            value: 10.220.249.83
+          - name: REDIS_PORT
+            value: 6379
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                key: 1
+                name: employee-db-user-pw
+
