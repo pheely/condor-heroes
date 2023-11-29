@@ -11,3 +11,7 @@ Use the following command to enable v2 `kv` secret engine.
 ```bash
 vault secrets enable -path secret kv-v2
 ```
+
+## GCP Auth Method
+
+https://developer.hashicorp.com/vault/tutorials/auth-methods/gcp-auth-method
