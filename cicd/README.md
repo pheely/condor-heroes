@@ -42,7 +42,7 @@ gcloud builds triggers create cloud-source-repositories \
   --repo hstcld-poc-repo
 
 # run the trigger
-gcloud builds triggers run hstcld-poc-trigger
+gcloud builds triggers run hstcld-poc-trigger --branch master
 
 # auto trigger
 git commit -m "trigger build" --allow-empty
