@@ -132,6 +132,15 @@ vault kv put -mount=secret top-secret password=good4Now!
 
 </details>
 
+### Enable the v1 `kv` Secret Engine
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+```bash
+vault secrets enable -path secret-v1 kv
+```
+
+</details>
+
 ### Setting up GCP Auth Method
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
