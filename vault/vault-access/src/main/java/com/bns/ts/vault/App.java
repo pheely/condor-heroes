@@ -28,7 +28,7 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String options = args[1];
+        String options = args[0];
         switch (options) {
             case "iam":
                 readSecretsUsingIAM();
