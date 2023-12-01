@@ -275,7 +275,7 @@ back.
 
 ### What is Working
 
-1. Create and retrieve secrets using root token
+1. Connect to a remote Vault server and reate and retrieve secrets using root token
 2. 
 
 </details>
