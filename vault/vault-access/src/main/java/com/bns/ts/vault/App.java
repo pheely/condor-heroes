@@ -91,8 +91,7 @@ public class App implements CommandLineRunner {
 
     Versioned<Map<String, Object>> readResponse =
         vaultTemplate.opsForVersionedKeyValue("secret")
-            .get(
-                "token-pipeline-service-perimeter/uat/token-pipeline-mcopy/serviceAccount");
+            .get("token-pipeline-service-perimeter/uat/token-pipeline-mcopy/serviceAccount");
 
     String password = "";
     if (readResponse != null && readResponse.hasData()) {
@@ -115,16 +114,40 @@ public class App implements CommandLineRunner {
             "hvs.5aF85ggYl22iLy3Rsu0onV9a")
     );
 
+    Map<String, String> data = new HashMap<>();
+    data.put("password", "Hashi123");
+
+    Versioned.Metadata createResponse =
+        vaultTemplate.opsForVersionedKeyValue("secret")
+            .put("my-secret-password", data);
+
+    logger.info("Secret written successfully.");
+
     Versioned<Map<String, Object>> readResponse =
         vaultTemplate.opsForVersionedKeyValue("secret")
-            .get(
-                "top-secret");
+            .get("my-secret-password");
 
     String password = "";
     if (readResponse != null && readResponse.hasData()) {
       password = (String) readResponse.getData().get("password");
     }
 
-    logger.info("Access granted: " + password);
+    if (!password.equals("Hashi123")) {
+      throw new Exception("Unexpected password");
+    }
+
+    logger.info("Access granted");
   }
+
+  //   Versioned<Map<String, Object>> readResponse =
+  //       vaultTemplate.opsForVersionedKeyValue("secret")
+  //           .get("top-secret");
+
+  //   String password = "";
+  //   if (readResponse != null && readResponse.hasData()) {
+  //     password = (String) readResponse.getData().get("password");
+  //   }
+
+  //   logger.info("Access granted: " + password);
+  // }
 }

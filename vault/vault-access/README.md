@@ -1,18 +1,18 @@
 # Accessing Hashicorp Vault
 
-This shows how to save a version 2 KV secret into the Vault and retrieve it 
-back.
-
-## Setting up and Initializing the Server
+## Starting and Configuring Vault
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
-Run the following commands to start the server.
+### Setup
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Run the following commands to set up the environment for Vault server
 ```bash
 mkdir -p ~/try/vault
 cd ~/try/vault
 
-cat > config.hcl <<EOF
+tee config.hcl <<EOF
 storage "raft" {
   path    = "./vault/data"
   node_id = "node1"
@@ -29,9 +29,54 @@ ui = true
 EOF
 
 mkdir -p vault/data
+```
 
+</details>
+
+### Starting the Server
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Run the following commands to start the server.
+```bash
+cd ~/try/vault
 vault server -config=config.hcl
 ```
+
+</details>
+
+### Exposing the Endpoint (Optional)
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Run the following command to start ngrok and connect to Vault:
+```bash
+ngrok http http://127.0.0.1:8200
+```
+
+Copy the **Forwarding** address including `https://`.
+
+---
+
+**Note**: to install ngrok, run `sudo snap install ngrok`.
+
+---
+
+</details>
+
+### Shutting down the Server
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Run the following commands to shut down the Vault server.
+```bash
+pgrep -f vault | xargs kill
+```
+
+**Note**: the vault will be sealed during the shutdown phase. We need to unseal it after the next start.
+
+</details>
+
+### Initializing the Server
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
 To initialize the vault, run the following commands on a separate terminal:
 ```bash
@@ -43,22 +88,30 @@ Store the five keys and root token in a safe place.
 
 </details>
 
-## Unsealing the Vault
+### Unsealing the Vault
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
-To unseal the vault, run the following commands three times with different keys:
+You need to unseal the vault after the server is initialized the first time and everytime the server is restarted.
+
+To unseal the vault, ensure the environment variable is set:
+```bash
+export VAULT_ADDR='http://127.0.0.1:8200'
+```
+
+And run the following commands three times with different keys:
 ```bash
 vault operator unseal
 ```
 
 </details>
 
-## Authenticate to Vault as `admin` and Enable v2 `kv` Secret Engine
+### Authenticate to Vault as `root`
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
 Run the following command when asked provide the root token.
 ```bash
+export VAULT_ADDR=http://127.0.0.1:8200
 vault login
 ```
 Or alternatively, set the environment variables:
@@ -67,7 +120,11 @@ export VAULT_TOKEN=hvs.yejqgGeFsOpUwPAQbDRvSbdO
 export VAULT_ADDR=http://127.0.0.1:8200
 ```
 
-Use the following command to enable v2 `kv` secret engine.
+</details>
+
+### Enable the v2 `kv` Secret Engine
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
 ```bash
 vault secrets enable -path secret kv-v2
 vault kv put -mount=secret top-secret password=good4Now!
@@ -75,16 +132,12 @@ vault kv put -mount=secret top-secret password=good4Now!
 
 </details>
 
-## GCP Auth Method
+### Setting up GCP Auth Method
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
 Reference: https://developer.hashicorp.com/vault/tutorials/auth-methods/gcp-auth-method
 
-### GCP Side Setup
-
-<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
-
-#### Service Account and Json Key File
+#### GCP Side Setup
 
 A service account with the following permissions, and its JSON key file are required:
 - iam.serviceAccounts.get (included in roles/iam.serviceAccountUser)
@@ -97,15 +150,13 @@ A service account with the following permissions, and its JSON key file are requ
 
 **Key File**: `VaultServiceAccountKey.json`.
 
-</details>
+#### Vault Setup
 
-### Vault Setup
-<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
-
-1. Authenticate to the Vault
+1. Authenticate to the Vault as the root
 2. Set environment variable for the GCP service account
     ```bash
     export GCP_SERVICE_EMAIL=gyre-dataflow-ist@ibcwe-event-layer-f3ccf6d9.iam.gserviceaccount.com
+    export GCP_PROJECT=ibcwe-event-layer-f3ccf6d9
     ```
 3. Enable the GCP secrets engine
     ```bash
@@ -141,13 +192,15 @@ A service account with the following permissions, and its JSON key file are requ
     vault write auth/gcp/role/vault-gce-auth-role \
     type="gce" \
     policies="gcp" \
-    bound_projects="ibcwe-event-layer-f3ccf6d9" \
+    bound_projects=$GCP_PROJECT \
     bound_zones="us-east1-b"
     ```
+
 </details>
 
+</details>
 
-### Authentication to Vault using GCP Cloud IAM
+## Authentication to Vault using GCP Cloud IAM
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
@@ -166,43 +219,63 @@ vault kv get -mount secret top-secret
 
 </details>
 
-### Authentication to Vault from a GCE
+## Authentication to Vault from a GCE
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
-#### Installing and Starting ngrok on the Vault Server
+1. Create a GCE instance in the `us-east1-b` zone:
+    ```bash
+    gcloud compute instances create vault-auth-test --zone us-east1-b \
+    --service-account gyre-dataflow-ist@ibcwe-event-layer-f3ccf6d9.iam.gserviceaccount.com
+    ```
+2. SSH to the VM:
+    ```bash
+    gcloud compute ssh vault-auth-test --zone=us-east1-b 
+    ```
+3. Download the HashiCorp GPG key.
+    ```bash
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    ```
+4. Add the HashiCorp repo.
+    ```bash
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    ```
+5. Install Vault.
+    ```bash
+    sudo apt update && sudo apt install vault
+    ```
+6. Set an environment variable for the Vault ngrok address.
+    ```bash
+    export VAULT_ADDR=<actual-address-from-ngrok>
+    ```
+7. Authenticate with Vault using the `vault-gce-auth-role role`.
+    ```bash
+    vault login -method=gcp role="vault-gce-auth-role"
+    ```
+8. Retrieve a secrte
+    ```bash
+    vault kv get -mount secret top-secret
+    ``` 
+10. Disconnect the testing VM
+    ```bash
+    exit
+    ```
+11. Delete the testing VM
+    ```bash
+    gcloud compute instances delete vault-testing2 --zone us-east1-b
+    ```
+</details>
 
-Run the following command to install ngrok:
-```bash
-sudo snap install ngrok
-```
+## Java Code
 
-Run the following command to start ngrok and connect to Vault:
-```bash
-ngrok http http://127.0.0.1:8200
-```
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
-Copy the **Forwarding** address including `https://`.
+This shows how to save a version 2 KV secret into the Vault and retrieve it 
+back.
 
-#### Testing from a GCE
+### What is Working
 
-Creating a New VM Instance in `use-east1-b`
+1. Create and retrieve secrets using root token
+2. 
 
-Connect to the GCE and set an environment variable for the Vault ngrok address.
-```bash
-export VAULT_ADDR=<actual-address-from-ngrok>
-```
-
-Install Vault
-
-Authenticate with Vault using the `vault-gce-auth-role role`.
-```bash
-vault login -method=gcp role="vault-gce-auth-role"
-```
-
-Retrieve a secrte
-```bash
-vault kv get -mount secret top-secret
-``` 
- 
 </details>
