@@ -37,7 +37,9 @@ public class App implements CommandLineRunner {
 //                vaultEndpoint,
 //                new TokenAuthentication("hvs.CCOLpHinOR61cPg64nTRrG9y"));
 
+	    try {
         VaultTemplate vaultTemplate = new VaultTemplate(appConfig.vaultEndpoint(), appConfig.clientAuthentication());
+	/*
         Secrets secrets = new Secrets();
         secrets.userName = "hello";
         secrets.password = "world";
@@ -50,19 +52,30 @@ public class App implements CommandLineRunner {
         vaultTemplate.delete("secret-v1/my-secrets");
 
         // use this for kv-v2 secrets
-        Versioned.Metadata createResponse = vaultTemplate.opsForVersionedKeyValue("secret").put("my-secrets", secrets);
+        Versioned.Metadata createResponse = vaultTemplate.opsForVersionedKeyValue("secret").put("top-secrets", secrets);
         Versioned.Version version = createResponse.getVersion();
         logger.info("Secret written successfully - version: " + version.getVersion());
+        */
 
-        Versioned<Map<String, Object>> readResponse = vaultTemplate.opsForVersionedKeyValue("secret").get("my-secrets", version);
+        Versioned<Map<String, Object>> readResponse = vaultTemplate.opsForVersionedKeyValue("secret").get("top-secret");
 
+	String password = "";
+	  if (readResponse != null && readResponse.hasData()) {
+      password = (String) readResponse.getData().get("password");
+    }
+    logger.info("Read secret: "+ password);
+
+    /*
         Map<String, Object> secrets2 = new HashMap<>();
         if (readResponse != null && readResponse.hasData()) {
             secrets2 = readResponse.getData();
         }
         logger.info("Read secrets: " + secrets2);
-
+*/
 //    vaultTemplate.opsForVersionedKeyValue("secret").delete("my-secrets", version);
 //    vaultTemplate.opsForVersionedKeyValue("secret").destroy("my-secrets", version);
+    }catch (Exception ex) {
+      ex.printStackTrace();
+    }
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.vault.config.AbstractVaultConfiguration;
 public class AppConfig extends AbstractVaultConfiguration {
     @Override
     public ClientAuthentication clientAuthentication() {
-        GcpComputeAuthenticationOptions options = GcpComputeAuthenticationOptions.builder().role("vault-iam-auth-role").build();
+        GcpComputeAuthenticationOptions options = GcpComputeAuthenticationOptions.builder().role("vault-gce-auth-role").build();
         GcpComputeAuthentication authentication = new GcpComputeAuthentication(options, restOperations());
         return authentication;
     }
@@ -20,7 +20,7 @@ public class AppConfig extends AbstractVaultConfiguration {
     public VaultEndpoint vaultEndpoint() {
         VaultEndpoint vaultEndpoint = new VaultEndpoint();
 
-        vaultEndpoint.setHost("0468-99-229-154-201.ngrok.io");
+        vaultEndpoint.setHost("588f-35-222-242-37.ngrok.io");
         vaultEndpoint.setPort(443);
         vaultEndpoint.setScheme("https");
 
