@@ -209,27 +209,7 @@ A service account with the following permissions, and its JSON key file are requ
 
 </details>
 
-## Authentication to Vault using GCP Cloud IAM
-
-<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
-
-```bash
-vault login -method=gcp \
-role="vault-iam-auth-role" \
-service_account="$GCP_SERVICE_EMAIL" \
-jwt_exp="15m" \
-credentials=@VaultServiceAccountKey.json
-```
-
-Run the following command to retrieve a secret:
-```bash
-vault kv get -mount secret top-secret
-```
-
-</details>
-
-## Authentication to Vault from a GCE
-
+## Preparing the Test VM
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
 1. Create a GCE instance in the `us-east1-b` zone:
@@ -260,26 +240,84 @@ vault kv get -mount secret top-secret
     ```bash
     export VAULT_ADDR=<actual-address-from-ngrok>
     ```
-8. Authenticate with Vault using the `vault-gce-auth-role role`.
+8. Download the Java application and the key file
+    ```bash
+    gsutil cp gs://philip-innovate-staging/vault-access.jar .
+    gsutil cp gs://philip-innovate-staging/VaultServiceAccountKey.json .
+    ```
+
+</details>
+
+## Authentication to Vault using GCP Cloud IAM
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Still in the SHH session to the test VM.
+
+```bash
+vault login -method=gcp \
+role="vault-iam-auth-role" \
+service_account="$GCP_SERVICE_EMAIL" \
+jwt_exp="15m" \
+credentials=@VaultServiceAccountKey.json
+```
+
+Run the following command to retrieve a secret:
+```bash
+vault kv get -mount secret top-secret
+```
+
+</details>
+
+## Authentication to Vault from a GCE
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+Still in the SSH session to the test VM.
+
+1. Authenticate with Vault using the `vault-gce-auth-role role`.
     ```bash
     vault login -method=gcp role="vault-gce-auth-role"
     ```
-9. Retrieve a secret
+2. Retrieve a secret
     ```bash
     vault kv get -mount secret top-secret
     ``` 
-10. Connect and retrieve secrets in Java app
-    ```bash
-    gsutil cp gs://philip-innovate-staging/vault-access.jar .
-    java -jar vault-access.jar
-    ```
-11. Disconnect the testing VM
+
+</details>
+
+## Sample Java Application
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+The sample Java application demos:
+1. Authenticate to Vault using the IAM role and retrieve the secrets
+2. Authenticate to Vault using the GCE role and retrieve the secrets
+
+To use the IAM role:
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=VaultServiceAccountKey.json; java -jar vault-access.jar iam
+```
+
+To use the GCE role:
+```bash
+java -jar vault-access.jar gce
+```
+
+</details>
+
+## Cleanup
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+1. Disconnect the testing VM
     ```bash
     exit
     ```
-12. Delete the testing VM
+2. Delete the testing VM
     ```bash
     gcloud compute instances delete vault-auth-testing --zone us-east1-b
     ```
+
 </details>
 
