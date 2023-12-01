@@ -20,7 +20,7 @@ public class AppConfig extends AbstractVaultConfiguration {
     public VaultEndpoint vaultEndpoint() {
         VaultEndpoint vaultEndpoint = new VaultEndpoint();
 
-        vaultEndpoint.setHost("c818-35-222-242-37.ngrok.io");
+        vaultEndpoint.setHost("b53c-35-222-242-37.ngrok.io");
         vaultEndpoint.setPort(443);
         vaultEndpoint.setScheme("https");
 
