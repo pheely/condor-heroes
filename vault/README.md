@@ -316,7 +316,7 @@ java -jar vault-access-0.0.1-SNAPSHOT.jar gce
     ```
 2. Delete the testing VM
     ```bash
-    gcloud compute instances delete vault-auth-test --zone us-east1-b
+    gcloud compute instances stop vault-auth-test --zone us-east1-b
     ```
 
 </details>
