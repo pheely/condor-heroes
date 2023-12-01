@@ -290,6 +290,8 @@ Still in the SSH session to the test VM.
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
+Reference: https://docs.spring.io/spring-vault/reference/index.html
+
 The sample Java application demos:
 1. Authenticate to Vault using the IAM role and retrieve the secrets
 2. Authenticate to Vault using the GCE role and retrieve the secrets
