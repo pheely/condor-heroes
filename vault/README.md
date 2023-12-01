@@ -242,7 +242,7 @@ A service account with the following permissions, and its JSON key file are requ
     ```
 8. Download the Java application and the key file
     ```bash
-    gsutil cp gs://philip-innovate-staging/vault-access.jar .
+    gsutil cp gs://philip-innovate-staging/vault-access-0.0.1-SNAPSHOT.jar .
     gsutil cp gs://philip-innovate-staging/VaultServiceAccountKey.json .
     ```
 
@@ -296,12 +296,12 @@ The sample Java application demos:
 
 To use the IAM role:
 ```bash
-GOOGLE_APPLICATION_CREDENTIALS=VaultServiceAccountKey.json; java -jar vault-access.jar iam
+GOOGLE_APPLICATION_CREDENTIALS=VaultServiceAccountKey.json java -jar vault-access-0.0.1-SNAPSHOT.jar iam
 ```
 
 To use the GCE role:
 ```bash
-java -jar vault-access.jar gce
+java -jar vault-access-0.0.1-SNAPSHOT.jar gce
 ```
 
 </details>

@@ -32,10 +32,15 @@ public class App implements CommandLineRunner {
         switch (options) {
             case "iam":
                 readSecretsUsingIAM();
+		break;
             case "gce":
                 readSecrets();
+		break;
             case "write":
                 writeSecrets();
+		break;
+	    default:
+		logger.info("Doing nothing");
         }
     }
 
