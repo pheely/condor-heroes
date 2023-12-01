@@ -23,6 +23,12 @@ public class App implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    // readFromLocal();
+    readFromInnovation();
+    // readFromUAT();
+  }
+
+  private void readFromLocal() throws Exception {
     VaultEndpoint vaultEndpoint = new VaultEndpoint();
 
     vaultEndpoint.setHost("127.0.0.1");
@@ -57,9 +63,6 @@ public class App implements CommandLineRunner {
     }
 
     logger.info("Access granted");
-
-//    readFromUAT();
-    readFromInnovation();
   }
 
   /*
