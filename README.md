@@ -8,7 +8,7 @@
 
 ### [Terraform](tf/README.md)
 
-### [Vault](vault/README.md)
+### [Vault](vault/vault-access/README.md)
 
 ## Useful Info
 
