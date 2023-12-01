@@ -1,4 +1,4 @@
-package com.bns;
+package com.bns.ts.vault;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class AppIAMConfig extends AbstractVaultConfiguration {
     public VaultEndpoint vaultEndpoint() {
         VaultEndpoint vaultEndpoint = new VaultEndpoint();
 
-        vaultEndpoint.setHost("9039-35-222-242-37.ngrok.io");
+        vaultEndpoint.setHost("c818-35-222-242-37.ngrok.io");
         vaultEndpoint.setPort(443);
         vaultEndpoint.setScheme("https");
 

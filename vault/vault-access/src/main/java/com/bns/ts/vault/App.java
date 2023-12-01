@@ -10,8 +10,6 @@ import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 import org.springframework.vault.support.Versioned;
 
-import com.bns.AppIAMConfig;
-
 import java.util.HashMap;
 import java.util.Map;
 
