@@ -136,6 +136,14 @@ A service account with the following permissions, and its JSON key file are requ
     policies="gcp" \
     bound_service_accounts="$GCP_SERVICE_EMAIL"
     ```
+8. Create a role for GCE instances.
+    ```bash
+    vault write auth/gcp/role/vault-gce-auth-role \
+    type="gce" \
+    policies="gcp" \
+    bound_projects="ibcwe-event-layer-f3ccf6d9" \
+    bound_zones="us-east1-b"
+    ```
 </details>
 
 
@@ -153,9 +161,48 @@ credentials=@VaultServiceAccountKey.json
 
 Run the following command to retrieve a secret:
 ```bash
-vault kv -mount secret get top-secret
+vault kv get -mount secret top-secret
 ```
 
 </details>
 
+### Authentication to Vault from a GCE
+
+<details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
+
+#### Installing and Starting ngrok on the Vault Server
+
+Run the following command to install ngrok:
+```bash
+sudo snap install ngrok
+```
+
+Run the following command to start ngrok and connect to Vault:
+```bash
+ngrok http http://127.0.0.1:8200
+```
+
+Copy the **Forwarding** address including `https://`.
+
+#### Testing from a GCE
+
+Creating a New VM Instance in `use-east1-b`
+
+Connect to the GCE and set an environment variable for the Vault ngrok address.
+```bash
+export VAULT_ADDR=<actual-address-from-ngrok>
+```
+
+Install Vault
+
+Authenticate with Vault using the `vault-gce-auth-role role`.
+```bash
+vault login -method=gcp role="vault-gce-auth-role"
+```
+
+Retrieve a secrte
+```bash
+vault kv get -mount secret top-secret
+``` 
+ 
 </details>
