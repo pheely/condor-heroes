@@ -27,7 +27,7 @@ public class App implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String[] args) throws Exception {
         String options = args[0];
         switch (options) {
             case "iam":
