@@ -10,14 +10,19 @@ import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
 import org.springframework.vault.support.Versioned;
 
+import com.bns.AppIAMConfig;
+
 import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
 public class App implements CommandLineRunner {
-    Logger logger = LoggerFactory.getLogger(App.class);
     @Autowired
     private AppConfig appConfig;
+    @Autowired
+    private AppIAMConfig iamConfig;
+
+    Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String... args) {
         SpringApplication.run(App.class, args);
@@ -27,6 +32,7 @@ public class App implements CommandLineRunner {
     public void run(String... args) throws Exception {
 //    writeSecrets();
         readSecrets();
+        readSecretsUsingIAM();
     }
 
     private void readSecrets() {
@@ -37,7 +43,19 @@ public class App implements CommandLineRunner {
         if (readResponse != null && readResponse.hasData()) {
             password = (String) readResponse.getData().get("password");
         }
-        logger.info("Read secret: " + password);
+        logger.info("GCE Read secret: " + password);
+
+    }
+
+    private void readSecretsUsingIAM() {
+        VaultTemplate vaultTemplate = new VaultTemplate(iamConfig.vaultEndpoint(), iamConfig.clientAuthentication());
+        Versioned<Map<String, Object>> readResponse = vaultTemplate.opsForVersionedKeyValue("secret").get("top-secret");
+
+        String password = "";
+        if (readResponse != null && readResponse.hasData()) {
+            password = (String) readResponse.getData().get("password");
+        }
+        logger.info("IAM Read secret: " + password);
 
     }
 
