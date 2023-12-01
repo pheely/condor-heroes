@@ -253,25 +253,39 @@ vault kv get -mount secret top-secret
     ```bash
     sudo apt update && sudo apt install vault
     ```
-6. Set an environment variable for the Vault ngrok address.
+6. Install JDK
+    ```bash
+    sudo apt install -y wget apt-transport-https
+    sudo mkdir -p /etc/apt/keyrings
+    sudo wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee /etc/apt/keyrings/adoptium.asc
+    sudo echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
+    sudo apt update 
+    sudo apt install temurin-17-jdk
+    ```
+7. Set an environment variable for the Vault ngrok address.
     ```bash
     export VAULT_ADDR=<actual-address-from-ngrok>
     ```
-7. Authenticate with Vault using the `vault-gce-auth-role role`.
+8. Authenticate with Vault using the `vault-gce-auth-role role`.
     ```bash
     vault login -method=gcp role="vault-gce-auth-role"
     ```
-8. Retrieve a secrte
+9. Retrieve a secret
     ```bash
     vault kv get -mount secret top-secret
     ``` 
-10. Disconnect the testing VM
+10. Connect and retrieve secrets in Java app
+    ```bash
+    gsutil cp gs://philip-innovate-staging/vault-access.jar .
+    java -jar vault-access.jar
+    ```
+11. Disconnect the testing VM
     ```bash
     exit
     ```
-11. Delete the testing VM
+12. Delete the testing VM
     ```bash
-    gcloud compute instances delete vault-testing2 --zone us-east1-b
+    gcloud compute instances delete vault-auth-testing --zone us-east1-b
     ```
 </details>
 
