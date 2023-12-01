@@ -59,6 +59,7 @@ public class App implements CommandLineRunner {
     logger.info("Access granted");
 
 //    readFromUAT();
+    readFromInnovation();
   }
 
   /*
@@ -93,6 +94,32 @@ public class App implements CommandLineRunner {
     String password = "";
     if (readResponse != null && readResponse.hasData()) {
       password = (String) readResponse.getData().get("privateKey");
+    }
+
+    logger.info("Access granted: " + password);
+  }
+
+  private void readFromInnovation() throws Exception {
+    VaultEndpoint vaultEndpoint = new VaultEndpoint();
+
+    vaultEndpoint.setHost("c09c-35-193-195-32.ngrok.io");
+    vaultEndpoint.setPort(443);
+    vaultEndpoint.setScheme("https");
+
+    VaultTemplate vaultTemplate = new VaultTemplate(
+        vaultEndpoint,
+        new TokenAuthentication(
+            "hvs.5aF85ggYl22iLy3Rsu0onV9a")
+    );
+
+    Versioned<Map<String, Object>> readResponse =
+        vaultTemplate.opsForVersionedKeyValue("secret")
+            .get(
+                "top-secret");
+
+    String password = "";
+    if (readResponse != null && readResponse.hasData()) {
+      password = (String) readResponse.getData().get("password");
     }
 
     logger.info("Access granted: " + password);
