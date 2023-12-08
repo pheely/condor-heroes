@@ -61,6 +61,6 @@ terraform.rc
 
 ## Gradle
 .gradle
-/build/
+**/build/
 
 .idea
