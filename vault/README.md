@@ -50,10 +50,13 @@ vault server -config=config.hcl
 
 Run the following command to start ngrok and connect to Vault:
 ```bash
-ngrok http http://127.0.0.1:8200
+ngrok http http://127.0.0.1:8200 > /dev/null &
 ```
 
-Copy the **Forwarding** address including `https://`.
+Run the following command to get the **Forwarding** address:
+```bash
+curl http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'
+```
 
 ---
 
