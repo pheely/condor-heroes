@@ -48,6 +48,11 @@ vault server -config=config.hcl
 
 <details><summary style="color:Maroon;font-size:16px;">Show Contents</summary>
 
+At the first time, run this command to authenticate ngrok agent. This is required only oce. The token is saved in the default config file:
+```bash
+ngrok config add-authtoken <token>
+```
+
 Run the following command to start ngrok and connect to Vault:
 ```bash
 ngrok http http://127.0.0.1:8200 > /dev/null &
