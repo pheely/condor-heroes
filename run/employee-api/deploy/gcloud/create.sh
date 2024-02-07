@@ -139,7 +139,8 @@ MYSQL_PASS=$(gcloud secrets versions access $SECRET_VERSION --secret=$SECRET_NAM
 # Create and poplate tables
 cloud-sql-proxy --port 3306 ${PROJECT_ID}:${REGION}:${INSTANCE_NAME} &
 sleep 15
-mysql -u root -p $MYSQL_PASS --host 127.0.0.1 < schema.sql
+mysql -u root -p$MYSQL_PASS --host 127.0.0.1 < ../../schema.sql
 
-
+# stop sqlproxy
+pgrep -f cloud-sql-proxy|xargs kill
 

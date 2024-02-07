@@ -48,7 +48,7 @@ gcloud services enable vpcaccess.googleapis.com
 
 gcloud run services delete $SERVICE_NAME
 gcloud sql instances delete $INSTANCE_NAME
-gcloud iam service-accounts delete "${INVOKER}@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud iam service-accounts delete "${INVOKER_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
 gcloud pubsub subscriptions delete $SUBSCRIPTION_NAME
 gcloud pubsub topics delete $TOPIC_NAME
 gcloud redis instances delete $REDIS_INSTANCE --region $REGION
